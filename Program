@@ -1,0 +1,134 @@
+Code:
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <sstream>
+#include<algorithm>
+#include<vector>
+#include<bits/stdc++.h>
+using namespace std;
+
+/////////////////////////////////////////////Team: Collaz codebreakers///////////////////////////////////////////////
+//////////////////////////Tamim,Mushfiqur,Srabony,Rraf,Shuvo,Arifin ,Aupy,Sany,Maruf,Morshed//////////////////////////
+
+//to determine cosine direction
+void directioncosine(long double e,long double f,long double g){
+        long double temp=((e*e)+(f*f)+(g*g));
+        double te=sqrt(temp);long long int tes=sqrt(temp);
+        if(te==tes) {
+            cout<<"Direction of consine: ";
+            if(e!=0) cout<<"l = "<<e<<"/"<<te<<" ,"; else cout<<"l = 0 , ";
+            if(f!=0) cout<<"m = "<<f<<"/"<<te<<" ,"; else cout<<"m = 0 , ";
+            if(g!=0) cout<<"n = "<<g<<"/"<<te<<endl; else cout<<"n = 0 "<<endl;
+        }
+        else {
+            cout<<"Direction of consine: ";
+            if(e!=0) cout<<"l = "<<e<<"/sqrt("<<temp<<") ,"; else cout<<"l = 0 , ";
+            if(f!=0) cout<<"m = "<<f<<"/sqrt("<<temp<<") ,"; else cout<<"m = 0 , ";
+            if(g!=0) cout<<"n = "<<g<<"/sqrt("<<temp<<")"<<endl; else cout<<"n = 0"<<endl;
+        }
+}
+
+  //we can determine co-efficient of variable using this function
+double variableValue(const string &s,char variable){
+    string a;
+    int temp;
+    double ans=0.0;
+    bool det=false;
+    if(s.find(variable)!=string::npos){
+        temp=s.find(variable);
+        int st=0;
+        for(int i=temp-1;i>=0;i--){
+            if(s[i]=='-'||s[i]=='+'||s[i]=='('){
+                if(s[i]=='-')  det=true;
+                st=i+1;
+                break;
+            }
+        }
+        int ni=(temp-st);
+        a=s.substr(st,ni);
+        int sz=a.size();
+        if(sz==0) ans=1;
+        else {
+             if(a[sz-1]=='*'){
+                a.erase(a.begin()+sz-1);
+             }
+            ans=stod(a);
+        } 
+    }
+
+    if(det) ans=ans*(-1);
+    return ans;
+}
+
+struct Point3D {
+    long double x, y, z;
+};
+// taking point 
+Point3D getPoint(const string& pointName) {
+    Point3D point;
+    cout << "Enter " << pointName << " point (x, y, z): ";
+    cin >> point.x >> point.y >> point.z;
+    return point;
+}
+// final funtion of solving two point case
+void two_point(){
+    Point3D pointA = getPoint("first");
+    Point3D pointB = getPoint("second");
+    long double l,m,n;
+    long double p=pointB.x-pointA.x,q=pointB.y-pointA.y,r=pointB.z-pointA.z;
+    directioncosine(p,q,r);
+    cout<<"Direction Ratio: "<<p<<" : "<<q<<" : "<<r<<endl;
+
+}
+//final function of solving 3d vector type
+void vectortype(){
+    string s;
+    cout<<"Enter vector: ";
+    cin.ignore();
+    cin>>s;
+    bool next=true;
+    for(int i=0;i<s.size();i++) {
+        if((s[i]>='0'&&s[i]<='9') ||s[i]=='i'||s[i]=='j'||s[i]=='k'||s[i]=='+'||s[i]=='-'||s[i]=='*'){
+            continue;
+        }
+        else {
+            cout<<"You entered invalid input"<<endl;
+            next=false;
+            break;
+        }
+    }
+    if(next){
+        long double p,q,r;
+        p=variableValue(s,'i');//calling variablevalue function to determine co-efficient of i
+        q=variableValue(s,'j');
+        r=variableValue(s,'k');
+        long double l,m,n;
+        directioncosine(p,q,r);
+        cout<<"Direction Ratio: "<<p<<" : "<<q<<" : "<<r<<endl;
+    }
+
+}
+void OriginCase(){
+    long double l,m,n;
+    long double a,b,c;
+    cout<<"Enter a,b,c: ";
+    cin>>a>>b>>c;
+    directioncosine(a,b,c);
+    cout<<"Direction Ratio: "<<a<<" : "<<b<<" : "<<c<<endl;
+}
+
+int main() { 
+     int a;
+     cout<<"1.Want to determine Direction consine & Direction ratio of two joining points "<<endl;
+     cout<<"2.Want to determine Direction consine & Direction ratio of a vector"<<endl;
+     cout<<"3.Determine the direction cosine of a line joining the point (a,b,c) with the origin."<<endl;
+     cout<<"Enter option: ";cin>>a;
+    if(a==1){
+        two_point();
+     }
+    else if(a==2) vectortype();
+    else if(a==3) OriginCase();
+    else cout<<"You entered invalid option"<<endl;
+    return 0;
+}
